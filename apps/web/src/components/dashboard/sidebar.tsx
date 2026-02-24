@@ -14,7 +14,7 @@ import {
   Sun,
   Moon,
 } from 'lucide-react';
-import { GlassAvatar, GlassButton } from '@/components/ui';
+import { GlassAvatar, GlassButton, PlatformIcon, platformName } from '@/components/ui';
 import { createClient } from '@/lib/supabase/client';
 import { useTheme } from '@/lib/theme-context';
 
@@ -31,6 +31,14 @@ const navItems = [
   { label: 'Integrations', icon: Plug, href: '/settings/integrations' },
   { label: 'Team', icon: Users, href: '/settings/team' },
 ];
+
+const channelIntegrations = [
+  { platform: 'slack', href: '/channels/slack' },
+  { platform: 'discord', href: '/channels/discord' },
+  { platform: 'intercom', href: '/channels/intercom' },
+  { platform: 'telegram', href: '/channels/telegram' },
+  { platform: 'x', href: '/channels/x' },
+] as const;
 
 export function Sidebar({ user, team }: SidebarProps) {
   const pathname = usePathname();
@@ -164,6 +172,83 @@ export function Sidebar({ user, team }: SidebarProps) {
             </Link>
           );
         })}
+
+        {/* Channels Section */}
+        <div className="pt-4">
+          <p
+            className="px-3 py-2 text-xs font-semibold uppercase tracking-wider"
+            style={{
+              color: theme === 'light'
+                ? 'rgba(0, 0, 0, 0.35)'
+                : 'rgba(255, 255, 255, 0.35)',
+            }}
+          >
+            Channels
+          </p>
+          {channelIntegrations.map((channel) => {
+            const active = isActive(channel.href);
+
+            return (
+              <Link key={channel.href} href={channel.href} className="block">
+                <motion.div
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl select-none"
+                  style={{
+                    background: active
+                      ? 'rgba(10, 132, 255, 0.15)'
+                      : 'transparent',
+                    border: active
+                      ? '1px solid rgba(10, 132, 255, 0.3)'
+                      : '1px solid transparent',
+                    color: active
+                      ? '#0a84ff'
+                      : theme === 'light'
+                      ? 'rgba(0, 0, 0, 0.55)'
+                      : 'rgba(255, 255, 255, 0.55)',
+                  }}
+                  whileHover={
+                    !active
+                      ? {
+                          background: theme === 'light'
+                            ? 'rgba(0, 0, 0, 0.04)'
+                            : 'rgba(255, 255, 255, 0.05)',
+                          borderColor: theme === 'light'
+                            ? 'rgba(0, 0, 0, 0.06)'
+                            : 'rgba(255, 255, 255, 0.08)',
+                          color: theme === 'light'
+                            ? 'rgba(0, 0, 0, 0.85)'
+                            : 'rgba(255, 255, 255, 0.85)',
+                        }
+                      : undefined
+                  }
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                >
+                  <div className="shrink-0" style={{ color: 'inherit' }}>
+                    <PlatformIcon platform={channel.platform} size={16} />
+                  </div>
+                  <span
+                    className="text-sm font-medium"
+                    style={{
+                      color: active
+                        ? '#0a84ff'
+                        : 'inherit',
+                    }}
+                  >
+                    {platformName(channel.platform)}
+                  </span>
+                  {active && (
+                    <motion.div
+                      layoutId="sidebar-active-indicator"
+                      className="ml-auto w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ background: '#0a84ff' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                </motion.div>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       {/* User footer */}
