@@ -8,6 +8,7 @@
  * Handles graceful shutdown on SIGTERM / SIGINT.
  */
 
+import 'dotenv/config';
 import http from 'node:http';
 import { createClient } from '@supabase/supabase-js';
 import { Client as DiscordClient, GatewayIntentBits, Events } from 'discord.js';

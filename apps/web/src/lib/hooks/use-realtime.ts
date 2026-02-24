@@ -17,12 +17,20 @@ export interface BugReport {
   confidence_score: number | null;
   source_channel: string | null;
   dedup_match_id: string | null;
+  dedup_score: number | null;
   consolidated_summary: string | null;
   monday_item_id: string | null;
   report_count: number;
   source_message_ids?: string[];
   created_at: string;
   updated_at: string;
+  // Match details for deduplication
+  match_details?: {
+    type: 'monday' | 'bug_report';
+    title: string;
+    description?: string | null;
+    monday_board_id?: string;
+  } | null;
 }
 
 export interface IncomingMessage {
@@ -124,7 +132,55 @@ export function useRealtimeQueue(teamId: string) {
       .order('created_at', { ascending: false });
 
     if (!error && data) {
-      setQueue(data as BugReport[]);
+      // Fetch match details for bugs with dedup_match_id
+      const bugsWithMatches = await Promise.all(
+        data.map(async (bug: any) => {
+          if (!bug.dedup_match_id) {
+            return bug;
+          }
+
+          // Try to find match in bug_reports first
+          const { data: bugMatch } = await supabase
+            .from('bug_reports')
+            .select('id, title, description')
+            .eq('id', bug.dedup_match_id)
+            .single();
+
+          if (bugMatch) {
+            return {
+              ...bug,
+              match_details: {
+                type: 'bug_report' as const,
+                title: bugMatch.title,
+                description: bugMatch.description,
+              },
+            };
+          }
+
+          // If not found in bug_reports, try monday_backlog_items
+          const { data: mondayMatch } = await supabase
+            .from('monday_backlog_items')
+            .select('id, name, description, monday_board_id')
+            .eq('id', bug.dedup_match_id)
+            .single();
+
+          if (mondayMatch) {
+            return {
+              ...bug,
+              match_details: {
+                type: 'monday' as const,
+                title: mondayMatch.name,
+                description: mondayMatch.description,
+                monday_board_id: mondayMatch.monday_board_id,
+              },
+            };
+          }
+
+          return bug;
+        })
+      );
+
+      setQueue(bugsWithMatches as BugReport[]);
     }
     setLoading(false);
   }, [teamId]);

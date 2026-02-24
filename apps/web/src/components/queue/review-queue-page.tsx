@@ -105,7 +105,19 @@ function QueueItem({ bug, onAction }: QueueItemProps) {
                   via {platformName(bug.source_channel)}
                 </span>
               )}
-              {bug.dedup_match_id && (
+              {bug.dedup_match_id && bug.match_details && (
+                <GlassBadge variant="info">
+                  {bug.match_details.type === 'monday'
+                    ? 'Possible duplicate in Monday.com'
+                    : 'Possible duplicate bug'}
+                  {bug.dedup_score !== null && (
+                    <span style={{ opacity: 0.7 }}>
+                      {' '}· {Math.round(bug.dedup_score * 100)}% match
+                    </span>
+                  )}
+                </GlassBadge>
+              )}
+              {bug.dedup_match_id && !bug.match_details && (
                 <GlassBadge variant="info">Possible duplicate</GlassBadge>
               )}
             </div>
@@ -229,6 +241,55 @@ function QueueItem({ bug, onAction }: QueueItemProps) {
                 </div>
               )}
 
+              {bug.match_details && (
+                <div
+                  className="p-3 rounded-xl"
+                  style={{
+                    background: 'rgba(255,159,10,0.08)',
+                    border: '1px solid rgba(255,159,10,0.2)',
+                  }}
+                >
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <GitMerge size={12} style={{ color: '#ff9f0a' }} />
+                    <p
+                      className="text-xs font-medium"
+                      style={{ color: '#ff9f0a' }}
+                    >
+                      {bug.match_details.type === 'monday'
+                        ? 'Similar Item in Monday.com'
+                        : 'Similar Existing Bug Report'}
+                      {bug.dedup_score !== null && (
+                        <span style={{ opacity: 0.7, marginLeft: '4px' }}>
+                          ({Math.round(bug.dedup_score * 100)}% similarity)
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <p
+                    className="text-sm font-medium mb-1"
+                    style={{ color: 'rgba(255,255,255,0.9)' }}
+                  >
+                    {bug.match_details.title}
+                  </p>
+                  {bug.match_details.description && (
+                    <p
+                      className="text-xs leading-relaxed"
+                      style={{ color: 'rgba(255,255,255,0.6)' }}
+                    >
+                      {bug.match_details.description}
+                    </p>
+                  )}
+                  {bug.match_details.type === 'monday' && bug.match_details.monday_board_id && (
+                    <p
+                      className="text-xs mt-1.5"
+                      style={{ color: 'rgba(255,255,255,0.4)' }}
+                    >
+                      Board ID: {bug.match_details.monday_board_id}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="flex items-center gap-2 pt-1 flex-wrap">
                 <GlassButton
                   variant="primary"
@@ -263,7 +324,9 @@ function QueueItem({ bug, onAction }: QueueItemProps) {
                     }}
                   >
                     <GitMerge size={13} />
-                    Merge Duplicate
+                    {bug.match_details?.type === 'monday'
+                      ? 'Mark as Duplicate (in Monday.com)'
+                      : 'Merge Duplicate'}
                   </GlassButton>
                 )}
               </div>
