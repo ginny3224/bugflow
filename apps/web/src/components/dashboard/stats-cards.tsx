@@ -179,7 +179,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 3 * 0.08, ease: 'easeOut' }}
       >
-        <GlassCard className="p-5 h-full">
+        <GlassCard className="p-5">
           <div className="flex items-start justify-between mb-4">
             <div
               className="flex items-center justify-center w-10 h-10 rounded-xl shrink-0"
@@ -190,67 +190,54 @@ export function StatsCards({ stats }: StatsCardsProps) {
             >
               <Radio size={18} style={{ color: '#bf5af2' }} />
             </div>
-            <span
-              className="text-xs font-medium px-2 py-0.5 rounded-full"
-              style={{
-                background:
-                  connectedCount === stats.channels.length
-                    ? 'rgba(48, 209, 88, 0.12)'
-                    : 'rgba(255, 159, 10, 0.12)',
-                color:
-                  connectedCount === stats.channels.length
-                    ? '#30d158'
-                    : '#ff9f0a',
-                border:
-                  connectedCount === stats.channels.length
-                    ? '1px solid rgba(48, 209, 88, 0.3)'
-                    : '1px solid rgba(255, 159, 10, 0.3)',
-              }}
-            >
-              {connectedCount}/{stats.channels.length}
-            </span>
           </div>
 
-          <p
-            className="text-sm font-medium mb-3"
-            style={{ color: 'var(--glass-text-secondary)' }}
-          >
-            Channels
-          </p>
+          <div className="space-y-1">
+            <p
+              className="text-3xl font-bold tracking-tight tabular-nums"
+              style={{ color: 'var(--glass-text-primary)' }}
+            >
+              <AnimatedNumber value={connectedCount} />
+              <span
+                className="text-lg"
+                style={{ color: 'var(--glass-text-tertiary)' }}
+              >
+                /{stats.channels.length}
+              </span>
+            </p>
+            <p
+              className="text-sm font-medium"
+              style={{ color: 'var(--glass-text-secondary)' }}
+            >
+              Active Channels
+            </p>
+          </div>
 
-          <div className="flex flex-col gap-2">
-            {stats.channels.map((ch) => (
-              <div key={ch.platform} className="flex items-center gap-2.5">
-                <PlatformIcon platform={ch.platform} size={14} />
-                <span
-                  className="text-xs font-medium flex-1"
-                  style={{ color: 'var(--glass-text-secondary)' }}
+          <div className="mt-3">
+            <div className="flex flex-wrap gap-1.5">
+              {stats.channels.map((ch) => (
+                <div
+                  key={ch.platform}
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
+                  style={{
+                    background: ch.connected
+                      ? 'rgba(48, 209, 88, 0.1)'
+                      : 'rgba(255, 255, 255, 0.04)',
+                    border: ch.connected
+                      ? '1px solid rgba(48, 209, 88, 0.2)'
+                      : '1px solid rgba(255, 255, 255, 0.06)',
+                  }}
                 >
-                  {platformName(ch.platform)}
-                </span>
-                <div className="flex items-center gap-1.5">
+                  <PlatformIcon platform={ch.platform} size={12} />
                   <span
-                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                    className="w-1.5 h-1.5 rounded-full"
                     style={{
-                      background: ch.connected ? '#30d158' : '#ff453a',
-                      boxShadow: ch.connected
-                        ? '0 0 6px rgba(48, 209, 88, 0.4)'
-                        : 'none',
+                      background: ch.connected ? '#30d158' : 'rgba(255,255,255,0.2)',
                     }}
                   />
-                  <span
-                    className="text-xs"
-                    style={{
-                      color: ch.connected
-                        ? 'rgba(48, 209, 88, 0.8)'
-                        : 'rgba(255, 69, 58, 0.8)',
-                    }}
-                  >
-                    {ch.connected ? 'Connected' : 'Offline'}
-                  </span>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </GlassCard>
       </motion.div>
