@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Inbox,
-  Bug,
   TrendingUp,
   FileText,
   Plug,
@@ -26,7 +25,7 @@ interface SidebarProps {
 
 const navItems = [
   { label: 'Inbox', icon: Inbox, href: '/' },
-  { label: 'Bugs', icon: Bug, href: '/bugs' },
+  { label: 'Queue', icon: Zap, href: '/queue' },
   { label: 'Trends', icon: TrendingUp, href: '/trends' },
   { label: 'Digests', icon: FileText, href: '/digests' },
   { label: 'Integrations', icon: Plug, href: '/settings/integrations' },
