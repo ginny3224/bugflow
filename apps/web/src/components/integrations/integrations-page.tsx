@@ -8,7 +8,7 @@ import { SetupWizard } from './setup-wizard';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 
-type Platform = 'slack' | 'discord' | 'intercom' | 'telegram' | 'monday';
+type Platform = 'slack' | 'discord' | 'intercom' | 'telegram' | 'monday' | 'x';
 
 interface Integration {
   id: string;
@@ -44,9 +44,12 @@ const PLATFORM_META: Record<
   monday: {
     description: 'Create bug items directly in your Monday.com boards',
   },
+  x: {
+    description: 'Monitor X (Twitter) mentions and DMs for bug reports',
+  },
 };
 
-const ALL_PLATFORMS: Platform[] = ['slack', 'discord', 'intercom', 'telegram', 'monday'];
+const ALL_PLATFORMS: Platform[] = ['slack', 'discord', 'intercom', 'telegram', 'monday', 'x'];
 
 interface IntegrationCardProps {
   platform: Platform;
