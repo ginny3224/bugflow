@@ -60,7 +60,7 @@ function encryptSensitiveConfig(
 // ---------------------------------------------------------------------------
 
 const CreateIntegrationSchema = z.object({
-  platform: z.enum(['slack', 'discord', 'intercom', 'telegram', 'monday']),
+  platform: z.enum(['slack', 'discord', 'intercom', 'telegram', 'monday', 'x']),
   name: z.string().min(1).max(120),
   config: z.record(z.unknown()).default({}),
 })

@@ -439,6 +439,13 @@ export const MOCK_INTEGRATIONS = [
     created_at: daysAgo(5),
     config_summary: 'Support group',
   },
+  {
+    id: 'int-005',
+    platform: 'x' as const,
+    enabled: true,
+    created_at: daysAgo(3),
+    config_summary: 'Monitoring mentions and DMs',
+  },
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────

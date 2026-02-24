@@ -19,7 +19,8 @@ export type Platform =
   | 'discord'
   | 'intercom'
   | 'telegram'
-  | 'monday';
+  | 'monday'
+  | 'x';
 
 // ---------------------------------------------------------------------------
 // Team

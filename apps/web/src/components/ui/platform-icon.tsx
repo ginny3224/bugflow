@@ -50,6 +50,14 @@ export function PlatformIcon({ platform, size = 16, className }: PlatformIconPro
         </svg>
       );
 
+    case 'x':
+    case 'twitter':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
+        </svg>
+      );
+
     default:
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
@@ -67,6 +75,8 @@ export function platformName(platform: string): string {
     intercom: 'Intercom',
     telegram: 'Telegram',
     monday: 'Monday.com',
+    x: 'X (Twitter)',
+    twitter: 'X (Twitter)',
   };
   return names[platform.toLowerCase()] ?? platform;
 }
@@ -78,6 +88,8 @@ export function platformColor(platform: string): string {
     intercom: '#286EFA',
     telegram: '#2AABEE',
     monday: '#FF3D57',
+    x: '#000000',
+    twitter: '#000000',
   };
   return colors[platform.toLowerCase()] ?? 'rgba(255,255,255,0.2)';
 }

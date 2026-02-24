@@ -113,7 +113,7 @@ CREATE TABLE integrations (
     updated_at  timestamptz NOT NULL DEFAULT now(),
 
     CONSTRAINT integrations_platform_check CHECK (
-        platform IN ('slack', 'discord', 'intercom', 'telegram', 'monday')
+        platform IN ('slack', 'discord', 'intercom', 'telegram', 'monday', 'x')
     )
 );
 

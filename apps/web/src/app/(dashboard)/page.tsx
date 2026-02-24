@@ -17,12 +17,13 @@ export default async function InboxPage() {
     totalBugs: MOCK_BUGS.length,
     pendingReview: pending.length,
     approvedToday: approved.length,
-    activeChannels: 4,
+    activeChannels: 5,
     channels: [
       { platform: 'slack', connected: true },
       { platform: 'discord', connected: true },
       { platform: 'intercom', connected: true },
       { platform: 'telegram', connected: true },
+      { platform: 'x', connected: true },
     ],
     trends: {
       totalBugsDelta: 5,

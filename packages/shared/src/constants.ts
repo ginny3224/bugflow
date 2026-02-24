@@ -27,6 +27,7 @@ export const PLATFORMS: ReadonlyArray<{
   { value: 'intercom', label: 'Intercom', supports_replies: true },
   { value: 'telegram', label: 'Telegram', supports_replies: true },
   { value: 'monday', label: 'Monday.com', supports_replies: false },
+  { value: 'x', label: 'X (Twitter)', supports_replies: true },
 ] as const;
 
 // ---------------------------------------------------------------------------

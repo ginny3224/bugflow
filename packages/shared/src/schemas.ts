@@ -24,6 +24,7 @@ export const platformSchema = z.enum([
   'intercom',
   'telegram',
   'monday',
+  'x',
 ]);
 
 export type PlatformSchema = z.infer<typeof platformSchema>;
@@ -479,6 +480,26 @@ export const mondayWebhookPayloadSchema = z.object({
 
 export type MondayWebhookPayload = z.infer<typeof mondayWebhookPayloadSchema>;
 
+/** X (Twitter) sends webhook events for mentions, DMs, and tweets */
+export const xWebhookPayloadSchema = z.object({
+  event: z.object({
+    type: z.string(),
+    id: z.string().optional(),
+    text: z.string().optional(),
+    user: z.object({
+      id: z.string(),
+      username: z.string(),
+      name: z.string().optional(),
+    }).optional(),
+    created_at: z.string().optional(),
+    in_reply_to_status_id: z.string().optional(),
+  }),
+  /** URL verification challenge for account activity webhooks */
+  challenge: z.string().optional(),
+});
+
+export type XWebhookPayload = z.infer<typeof xWebhookPayloadSchema>;
+
 /** Discriminated union of all webhook payload types */
 export const webhookPayloadSchema = z.discriminatedUnion('_platform', [
   slackWebhookPayloadSchema.extend({ _platform: z.literal('slack') }),
@@ -486,6 +507,7 @@ export const webhookPayloadSchema = z.discriminatedUnion('_platform', [
   intercomWebhookPayloadSchema.extend({ _platform: z.literal('intercom') }),
   telegramWebhookPayloadSchema.extend({ _platform: z.literal('telegram') }),
   mondayWebhookPayloadSchema.extend({ _platform: z.literal('monday') }),
+  xWebhookPayloadSchema.extend({ _platform: z.literal('x') }),
 ]);
 
 export type WebhookPayload = z.infer<typeof webhookPayloadSchema>;

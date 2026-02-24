@@ -43,7 +43,7 @@ const severityColors: Record<string, { color: string; bg: string; border: string
   low: { color: '#30d158', bg: 'rgba(48, 209, 88, 0.12)', border: 'rgba(48, 209, 88, 0.3)' },
 };
 
-const sourceChannels = ['slack', 'discord', 'intercom', 'telegram'] as const;
+const sourceChannels = ['slack', 'discord', 'intercom', 'telegram', 'x'] as const;
 
 const severityOrder: Record<string, number> = {
   critical: 0,
